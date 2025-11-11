@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+$("#mydiv").hide();
+$("#show").click(function(){
+    $("#mydiv").show();
+});
+$("#tohide").click(function(){
+    $("*").hide();
+});
+$(".insidediv").mouseenter(function(){
+  $(this).css("background-color", "pink");
+});
+$("p").dblclick(function(){
+  $(this).css("font-size", "40px");
+});
+});
+</script>
+</head>
+<body>
+
+<button id="show">click to show all</button>
+<div id="mydiv">
+  <h2 class="insidediv">This is a heading in a div element</h2>
+  <p class="insidediv">This is some text in a div element.</p>
+  <p>This is another text in a div element.</p>
+  <button id="tohide">click to hide all</button>
+</div>
+
+</body>
+</html>
