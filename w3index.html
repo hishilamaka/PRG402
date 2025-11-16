@@ -1,36 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AfnoBhag</title>
-    <link rel="stylesheet" href="w3style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-    <!-- Confetti Library -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AfnoBhag</title>
+  <link rel="stylesheet" href="w3style.css" />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
-<div class="container">
-    <h1 class="logo">AfnoBhag</h1>
+  <nav class="navbar">
+    <div class="logo">AfnoBhag</div>
 
-    <div id="people-section">
-        <h2>Add People</h2>
-        <input type="text" id="person-name" placeholder="Name">
-        <input type="number" id="person-paid" placeholder="Amount Paid">
-        <button id="add-person">Add</button>
+    <!-- Hamburger icon -->
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
 
-    <h3>People List</h3>
-    <ul id="people-list"></ul>
+    <ul class="nav-links">
+      <!-- Close button for sidebar -->
+      <li class="close-btn" onclick="toggleMenu()">×</li>
+      <li><a href="#home" onclick="toggleMenu()">Home</a></li>
+      <li><a href="#add" onclick="toggleMenu()">Add Expense</a></li>
+      <li><a href="#result" onclick="toggleMenu()">Results</a></li>
+      <li><a href="#about" onclick="toggleMenu()">About</a></li>
+    </ul>
+  </nav>
 
-    <button id="calculate-btn">Calculate Split</button>
+  <div id="overlay" onclick="toggleMenu()"></div>
 
-    <h3>Result</h3>
-    <div id="result"></div>
-</div>
+  <section id="home" class="page-section">
+    <h2>Welcome 💗</h2>
+    <p>Split your group expenses easily — no math needed!</p>
+  </section>
 
-<script src="w3App.js"></script>
+  <section id="add" class="page-section">
+    <h2>Add Expense</h2>
+    <input type="text" id="name" placeholder="Name" />
+    <input type="number" id="amount" placeholder="Amount Paid (Rs)" />
+    <button id="addBtn">Add</button>
+    <ul id="peopleList"></ul>
+    <button id="calculateBtn">Calculate Split</button>
+  </section>
+
+  <section id="result" class="page-section">
+    <h2>Results</h2>
+    <div id="resultsBox"></div>
+  </section>
+
+  <section id="about" class="page-section">
+    <h2>About</h2>
+    <p><b>kasko bhag ma kati paryo ta?</b> </p>
+  </section>
+
+  <canvas id="confetti"></canvas>
+  <script src="w3App.js"></script>
+
 </body>
 </html>

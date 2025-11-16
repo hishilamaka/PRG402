@@ -1,116 +1,89 @@
 let people = [];
 
-$(document).ready(function() {
-    $("#add-person").click(function() {
-        const name = $("#person-name").val().trim();
-        const paidRaw = $("#person-paid").val();
-        const paid = parseFloat(paidRaw);
+/******** ADD PEOPLE ********/
+$("#addBtn").click(function () {
+  let name = $("#name").val().trim();
+  let amount = Number($("#amount").val());
 
-        if (!name || isNaN(paid)) {
-            alert("Enter valid name and amount");
-            return;
-        }
+  if (name === "" || amount <= 0) return;
 
-        people.push({ name, paid: +paid });
-        $("#people-list").append(`<li>${escapeHtml(name)} paid Rs ${paid.toFixed(2)}</li>`);
+  people.push({ name, amount });
+  $("#peopleList").append(`<li>${name} paid Rs ${amount}</li>`);
 
-        $("#person-name").val("");
-        $("#person-paid").val("");
-        $("#result").empty();
-    });
-
-    $("#calculate-btn").click(function() {
-        if (people.length === 0) {
-            $("#result").html("<p>Add at least one person.</p>");
-            return;
-        }
-
-        const total = people.reduce((sum, p) => sum + p.paid, 0);
-        const share = total / people.length;
-
-        const balances = people.map(p => ({
-            name: p.name,
-            balance: roundToTwo(p.paid - share)
-        }));
-
-        let output = `<p>Total Expense: Rs ${roundToTwo(total).toFixed(2)}</p>
-                      <p>Each Person Should Pay: Rs ${roundToTwo(share).toFixed(2)}</p><hr>`;
-
-        balances.forEach(b => {
-            if (b.balance > 0) {
-                output += `<p>${escapeHtml(b.name)} will receive Rs ${b.balance.toFixed(2)}</p>`;
-            } else if (b.balance < 0) {
-                output += `<p>${escapeHtml(b.name)} will pay Rs ${Math.abs(b.balance).toFixed(2)}</p>`;
-            } else {
-                output += `<p>${escapeHtml(b.name)} is settled.</p>`;
-            }
-        });
-
-        const transactions = settleBalances(balances);
-        if (transactions.length > 0) {
-            output += `<hr><h4>Settle-up Transactions</h4><ul>`;
-            transactions.forEach(t => {
-                output += `<li>${escapeHtml(t.from)} pays ${escapeHtml(t.to)} Rs ${t.amount.toFixed(2)}</li>`;
-            });
-            output += `</ul>`;
-        } else {
-            output += `<p>No transactions needed — everyone is settled.</p>`;
-        }
-
-        $("#result").html(output);
-
-        // 🎉 Confetti animation
-        confetti({
-            particleCount: 180,
-            spread: 80,
-            origin: { y: 0.75 }
-        });
-    });
+  $("#name").val("");
+  $("#amount").val("");
 });
 
-function settleBalances(balances) {
-    const debtors = [];
-    const creditors = [];
+/******** CALCULATE SPLIT ********/
+$("#calculateBtn").click(function () {
+  if (people.length === 0) return;
 
-    balances.forEach(b => {
-        if (b.balance < -0.005) debtors.push({ name: b.name, amount: roundToTwo(-b.balance) });
-        else if (b.balance > 0.005) creditors.push({ name: b.name, amount: roundToTwo(b.balance) });
+  let total = people.reduce((sum, p) => sum + p.amount, 0);
+  let share = total / people.length;
+
+  let settlement = [];
+  let owers = people.filter(p => p.amount < share);
+  let receivers = people.filter(p => p.amount > share);
+
+  let html = `<p>Total: Rs ${total}<br>Each should pay: Rs ${share.toFixed(2)}</p><hr>`;
+
+  receivers.forEach(r => {
+    let extra = r.amount - share;
+    owers.forEach(o => {
+      if (extra > 0 && share - o.amount > 0) {
+        let pay = Math.min(extra, share - o.amount);
+        settlement.push(`${o.name} ➜ Rs ${pay.toFixed(2)} ➜ ${r.name}`);
+        extra -= pay;
+        o.amount += pay;
+      }
     });
+  });
 
-    creditors.sort((a, b) => b.amount - a.amount);
-    debtors.sort((a, b) => b.amount - a.amount);
+  html += settlement.length ? settlement.join("<br>") : "Everyone is settled.";
+  $("#resultsBox").html(html);
 
-    const transactions = [];
-    let i = 0, j = 0;
+  launchConfetti();
+});
 
-    while (i < debtors.length && j < creditors.length) {
-        const debtor = debtors[i];
-        const creditor = creditors[j];
-
-        const transfer = Math.min(debtor.amount, creditor.amount);
-        const tRounded = roundToTwo(transfer);
-
-        transactions.push({ from: debtor.name, to: creditor.name, amount: tRounded });
-
-        debtor.amount = roundToTwo(debtor.amount - tRounded);
-        creditor.amount = roundToTwo(creditor.amount - tRounded);
-
-        if (debtor.amount <= 0.005) i++;
-        if (creditor.amount <= 0.005) j++;
-    }
-
-    return transactions;
+/******** SIDEBAR NAVIGATION ********/
+function toggleMenu() {
+  const nav = document.querySelector(".nav-links");
+  nav.classList.toggle("show");
+  document.getElementById("overlay").style.display = nav.classList.contains("show")
+    ? "block"
+    : "none";
 }
 
-function roundToTwo(x) {
-    return Math.round((x + Number.EPSILON) * 100) / 100;
+/******** CONFETTI ANIMATION ********/
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+let confettiPieces = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+function launchConfetti() {
+  confettiPieces = Array.from({ length: 120 }).map(() => ({
+    x: Math.random() * canvas.width,
+    y: -10,
+    r: Math.random() * 6 + 4,
+    d: Math.random() * 3 + 2
+  }));
+  animate();
 }
 
-function escapeHtml(str) {
-    return String(str)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  confettiPieces.forEach(c => {
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, c.r, 0, 2 * Math.PI);
+    ctx.fillStyle = `hsl(${Math.random()*360}, 85%, 70%)`;
+    ctx.fill();
+    c.y += c.d;
+  });
+  requestAnimationFrame(animate);
 }
