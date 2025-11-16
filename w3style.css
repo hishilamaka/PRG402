@@ -1,0 +1,124 @@
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
+}
+
+/* Pastel animated gradient background */
+body {
+    background: linear-gradient(135deg, #ffe6f2, #fce8ff, #e3f2ff, #fff2e6);
+    background-size: 400% 400%;
+    animation: gradientShift 10s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    width: 92%;
+    max-width: 420px;
+    margin: auto;
+    padding: 22px;
+    margin-top: 30px;
+    background: #ffffff;
+    border-radius: 22px;
+    box-shadow: 0 0 15px rgba(255, 130, 175, 0.25);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(7px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.logo {
+    text-align: center;
+    font-size: 34px;
+    font-weight: 600;
+    color: #ff4f9e;
+    margin-bottom: 18px;
+}
+
+h2, h3 {
+    color: #ff4f9e;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    margin-top: 10px;
+    border-radius: 12px;
+    border: 2px solid #ffd0e6;
+    background: #fff8fc;
+    font-size: 15px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #ff4f9e;
+    background: #ffedf6;
+}
+
+button {
+    width: 100%;
+    background: #ff4f9e;
+    color: white;
+    padding: 13px;
+    margin-top: 16px;
+    border: none;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 600;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #ff2f89;
+    transform: scale(1.02);
+}
+
+#people-list {
+    list-style: none;
+    margin: 14px 0;
+}
+
+#people-list li {
+    background: #ffd6eb;
+    margin-bottom: 8px;
+    padding: 10px;
+    border-radius: 10px;
+    color: #c30062;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+#result {
+    background: #fff6fc;
+    padding: 15px;
+    border-radius: 12px;
+    min-height: 50px;
+    margin-top: 12px;
+    border: 2px solid #ffafd3;
+    color: #c30082;
+    font-size: 15px;
+    transition: 0.25s ease;
+}
+
+#result ul li {
+    margin-bottom: 6px;
+    background: #ffe0f1;
+    padding: 7px;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #a10065;
+}

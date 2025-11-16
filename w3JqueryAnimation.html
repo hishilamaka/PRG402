@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script> 
+$(document).ready(function(){
+  $("button").click(function(){
+    var div = $("div");  
+    // div.animate({left: '100px'}, "slow");
+    // div.animate({fontSize: '3em'}, "slow");
+    div.animate({left: '100px',height: '300px', width: '300px',opacity: '0.6',fontSize: '3em'}, "slow");
+    $('#demo').css('background-color','#0fd6dd')
+    $('#demo').css('color','rgb(0, 255, 0)')
+    $('#demo').css('background-color','#dd0f87')
+    div.animate({height: '100px', width: '100px', opacity: '1',fontSize:'16'}, "slow");
+    $('#demo').css('color','rgb(0, 0, 0)')
+    
+
+  });
+});
+</script> 
+</head>
+<body>
+
+<button>Start Animation</button>
+
+<div style="background:#dd0f87;height:100px;width:100px;position:absolute;" id="demo">HELLO</div>
+
+</body>
+</html>
