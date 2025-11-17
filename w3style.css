@@ -6,6 +6,17 @@ body {
   background: linear-gradient(145deg, #ffd1dc, #ffe6ef);
   color: #444;
 }
+html, body {
+  overflow-x: hidden;
+}
+
+body {
+  max-width: 100vw;
+}
+
+.nav-links {
+  box-sizing: border-box;
+}
 
 /******** NAVIGATION BAR ********/
 .navbar {
@@ -97,7 +108,7 @@ body {
     gap: 22px;
     transition: 0.35s ease-in-out;
     z-index: 120;
-    box-shadow: -4px 0 8px rgba(0,0,0,0.1); /* optional: smooth separation */
+    /* box-shadow: -4px 0 8px rgba(0,0,0,0.1); optional: smooth separation */
   }
 
   .nav-links.show {
